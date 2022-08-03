@@ -1,4 +1,4 @@
-name: AEM Code Sync
+name: Dev Stage Verification
 
 on: pull_request
 
@@ -26,7 +26,7 @@ jobs:
     needs: Checkout
     environment: develop
     steps:              
-     - name: Code Sync to Main branch
+     - name: Code Sync to develop branch
        if: github.ref == 'refs/heads/develop'
        run: |
            sudo apt-get install -y unzip git
@@ -45,8 +45,8 @@ jobs:
     needs: Checkout
     environment: stage
     steps:     
-     - name: Code Sync to develop branch
-       if: github.ref == 'refs/heads/develop'
+     - name: Code Sync to Stage branch
+       if: github.ref == 'refs/heads/stage'
        run: |
            sudo apt-get install -y unzip git
            sudo git remote add poc https://github.com/Vranda1188/AEM-Remote.git
