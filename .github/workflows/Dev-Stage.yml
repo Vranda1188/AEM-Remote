@@ -12,9 +12,22 @@ jobs:
      - name: Install CM plugin
        run: aio plugins:install @adobe/aio-cli-plugin-cloudmanager
        
+     - name: Decrypt large secret
+       run: |
+          chmod 775 * 
+          sh decrypt_secret.sh
+       env:
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      
+     - name: Configure Authentication
+       run: |
+           echo You Selected ${{ inputs.env }}
+           cat $HOME/secrets/config.json
+           aio config:set ims.contexts.aio-cli-plugin-cloudmanager $HOME/secrets/config.json --file --json
+           aio config:set ims.contexts.aio-cli-plugin-cloudmanager.private_key ./private.key --file
+       
   Checkout:
     runs-on: ubuntu-latest
-    needs: Configure-Adobe-I-O
     steps:    
      - name: Checkout
        uses: actions/checkout@v3
