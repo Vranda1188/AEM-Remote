@@ -1,6 +1,6 @@
 name: AEM Code Sync
 
-on: push
+on: workflow_dispatch
 
 jobs:
   Sync:
@@ -39,5 +39,17 @@ jobs:
            sudo git push -f -u poc develop
         shell: bash
 
-           
+      - name: Code Sync to Stage branch
+        if: github.ref == 'refs/heads/stage'
+        run: |
+           sudo apt-get install -y unzip git
+           sudo git remote add poc https://github.com/Vranda1188/AEM-Remote.git
+           sudo git config credential.username ${{ secrets.GIT_USER }}
+           sudo git config credential.helper ${{ secrets.GIT_PAT }}
+           sudo git remote -v
+           sudo git fetch --unshallow origin
+           sudo git checkout stage
+           sudo git pull
+           sudo git push -f -u poc stage
+        shell: bash         
         
