@@ -1,4 +1,7 @@
-name: Dev Stage Verification
+name: Dev Code Sync and Deploy
+
+#This workflow executes, whenever there is a pull request to develop branch.
+# it will sync the code and trigger the pipeline in CM
 
 on:
   pull_request:
