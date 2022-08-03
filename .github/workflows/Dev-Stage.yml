@@ -2,8 +2,31 @@ name: Dev Stage Verification
 
 on: workflow_dispatch
 
-jobs:       
-  Checkout:
+jobs:      
+  Checkout-Deploy-Dev:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:    
+     - name: Checkout
+       uses: actions/checkout@v3
+       with:
+          token: ${{ secrets.GIT_PAT }}
+    
+     - name: Code Sync to develop branch
+       if: github.ref == 'refs/heads/develop'
+       run: |
+           sudo apt-get install -y unzip git
+           sudo git remote add poc https://github.com/Vranda1188/AEM-Remote.git
+           sudo git config credential.username ${{ secrets.GIT_USER }}
+           sudo git config credential.helper ${{ secrets.GIT_PAT }}
+           sudo git remote -v
+           sudo git fetch --unshallow origin
+           sudo git checkout develop
+           sudo git pull
+           sudo git push -f -u poc develop
+       shell: bash
+       
+  CheckoutDeployStage:
     runs-on: ubuntu-latest
     environment: stage
     steps:    
@@ -24,6 +47,29 @@ jobs:
            sudo git checkout stage
            sudo git pull
            sudo git push -f -u poc stage
+       shell: bash
+
+  CheckoutDeployMain:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:    
+     - name: Checkout
+       uses: actions/checkout@v3
+       with:
+          token: ${{ secrets.GIT_PAT }}
+    
+     - name: Code Sync to Main branch
+       if: github.ref == 'refs/heads/main'
+       run: |
+           sudo apt-get install -y unzip git
+           sudo git remote add poc https://github.com/Vranda1188/AEM-Remote.git
+           sudo git config credential.username ${{ secrets.GIT_USER }}
+           sudo git config credential.helper ${{ secrets.GIT_PAT }}
+           sudo git remote -v
+           sudo git fetch --unshallow origin
+           sudo git checkout main
+           sudo git pull
+           sudo git push -f -u poc main
        shell: bash
 
 
