@@ -1,6 +1,6 @@
 name: AEM Code Sync
 
-on: push
+on: workflow_dispatch
 
 jobs:
   Sync:
