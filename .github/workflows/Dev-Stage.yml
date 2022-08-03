@@ -1,0 +1,60 @@
+name: AEM Code Sync
+
+on: pull_request
+
+jobs:
+  Configure-Adobe-I-O:
+    runs-on: ubuntu-latest
+    steps:
+     - name: Setup CLI
+       uses: adobe/aio-cli-setup-action@1.1.0
+      
+     - name: Install CM plugin
+       run: aio plugins:install @adobe/aio-cli-plugin-cloudmanager
+       
+  Checkout:
+    runs-on: ubuntu-latest
+    needs: Configure-Adobe-I-O
+    steps:    
+     - name: Checkout
+       uses: actions/checkout@v3
+       with:
+          token: ${{ secrets.GIT_PAT }}
+          
+  CodeSyncDevelop:
+    runs-on: ubuntu-latest
+    needs: Checkout
+    environment: develop
+    steps:              
+     - name: Code Sync to Main branch
+       if: github.ref == 'refs/heads/develop'
+       run: |
+           sudo apt-get install -y unzip git
+           sudo git remote add poc https://github.com/Vranda1188/AEM-Remote.git
+           sudo git config credential.username ${{ secrets.GIT_USER }}
+           sudo git config credential.helper ${{ secrets.GIT_PAT }}
+           sudo git remote -v
+           sudo git fetch --unshallow origin
+           sudo git checkout develop
+           sudo git pull
+           sudo git push -f -u poc develop
+       shell: bash
+       
+  CodeSyncStage:
+    runs-on: ubuntu-latest
+    needs: Checkout
+    environment: stage
+    steps:     
+     - name: Code Sync to develop branch
+       if: github.ref == 'refs/heads/develop'
+       run: |
+           sudo apt-get install -y unzip git
+           sudo git remote add poc https://github.com/Vranda1188/AEM-Remote.git
+           sudo git config credential.username ${{ secrets.GIT_USER }}
+           sudo git config credential.helper ${{ secrets.GIT_PAT }}
+           sudo git remote -v
+           sudo git fetch --unshallow origin
+           sudo git checkout stage
+           sudo git pull
+           sudo git push -f -u poc stage
+       shell: bash
