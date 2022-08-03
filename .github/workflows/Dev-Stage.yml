@@ -13,7 +13,7 @@ jobs:
           token: ${{ secrets.GIT_PAT }}
     
      - name: Code Sync to develop branch
-       if: github.ref == 'refs/heads/develop'
+#       if: github.ref == 'refs/heads/develop'
        run: |
            sudo apt-get install -y unzip git
            sudo git remote add poc https://github.com/Vranda1188/AEM-Remote.git
@@ -36,7 +36,7 @@ jobs:
           token: ${{ secrets.GIT_PAT }}
     
      - name: Code Sync to Stage branch
-       if: github.ref == 'refs/heads/stage'
+ #      if: github.ref == 'refs/heads/stage'
        run: |
            sudo apt-get install -y unzip git
            sudo git remote add poc https://github.com/Vranda1188/AEM-Remote.git
@@ -59,7 +59,7 @@ jobs:
           token: ${{ secrets.GIT_PAT }}
     
      - name: Code Sync to Main branch
-       if: github.ref == 'refs/heads/main'
+#       if: github.ref == 'refs/heads/main'
        run: |
            sudo apt-get install -y unzip git
            sudo git remote add poc https://github.com/Vranda1188/AEM-Remote.git
