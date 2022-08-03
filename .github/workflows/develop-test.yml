@@ -4,8 +4,9 @@ name: Dev Code Sync and Deploy
 # it will sync the code and trigger the pipeline in CM
 
 on:
-  pull_request:
-    branches: [develop]
+  push:
+    branches:    
+      - develop
 
 jobs:      
   Checkout-Deploy-Dev:
@@ -29,4 +30,3 @@ jobs:
            sudo git pull
            sudo git push -f -u poc develop
        shell: bash
-       
