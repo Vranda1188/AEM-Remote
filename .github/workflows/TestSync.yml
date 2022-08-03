@@ -40,3 +40,18 @@ jobs:
            sudo git pull --all
            sudo git push -f -u poc main
         shell: bash
+
+      - name: Code Sync to Stage branch
+        if: github.ref == 'refs/heads/stage'
+        run: |
+           sudo apt-get install -y unzip git
+           sudo git remote add poc https://github.com/Vranda1188/AEM-Remote.git
+           sudo git config credential.username ${{ secrets.GIT_USER }}
+           sudo git config credential.helper ${{ secrets.GIT_PAT }}
+           sudo git remote -v
+           sudo git checkout stage
+           sudo git branch -r | grep -v '\->' | while read remote; do sudo git branch --track "#{remote#origin/}" "$remote"; done
+           sudo git fetch --all
+           sudo git pull --all
+           sudo git push -f -u poc stage
+        shell: bash
