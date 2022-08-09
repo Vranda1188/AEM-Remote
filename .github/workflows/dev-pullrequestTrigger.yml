@@ -28,6 +28,7 @@ jobs:
      - name: Decrypt the json and key
        run: |
           chmod 775 * 
+          cd config
           sh decrypt_secret.sh
        env:
           PK: ${{ secrets.PK }}
