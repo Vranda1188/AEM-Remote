@@ -24,9 +24,9 @@ jobs:
            git config credential.username ${{ secrets.GIT_USER }}
            git config credential.helper ${{ secrets.GIT_PAT }}
            git remote -v
-           git checkout develop
            git branch -r | grep -v '\->' | while read remote; do sudo git branch --track "#{remote#origin/}" "$remote"; done
            git fetch --all
+           git checkout develop
            git pull --all
            git push -f -u poc develop
        shell: bash
