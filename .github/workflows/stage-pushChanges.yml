@@ -4,12 +4,35 @@ name: Dev Code Sync and Deploy
 # it will sync the code and trigger the pipeline in CM
 
 on:
-  push:
-    branches:    
-      - stage
+  pull_request:
+    types: [closed]
 
 jobs:      
   Checkout-Deploy-Dev:
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:    
+     - name: Checkout
+       uses: actions/checkout@v3
+       with:
+          token: ${{ secrets.GIT_PAT }}
+          fetch-depth: 0
+    
+     - name: Code Sync to develop branch
+       run: |
+           sudo apt-get install -y unzip git
+           git remote add poc https://github.com/Vranda1188/AEM-Remote.git
+           git config credential.username ${{ secrets.GIT_USER }}
+           git config credential.helper ${{ secrets.GIT_PAT }}
+           git remote -v
+           git checkout develop
+           git pull
+           git push -f -u poc develop
+       shell: bash
+       
+  Checkout-Deploy-Stage:
+    if: github.ref == 'refs/heads/stage'
     runs-on: ubuntu-latest
     environment: stage
     steps:    
@@ -17,16 +40,16 @@ jobs:
        uses: actions/checkout@v3
        with:
           token: ${{ secrets.GIT_PAT }}
+          fetch-depth: 0
     
      - name: Code Sync to stage branch
        run: |
            sudo apt-get install -y unzip git
-           sudo git remote add poc https://github.com/Vranda1188/AEM-Remote.git
-           sudo git config credential.username ${{ secrets.GIT_USER }}
-           sudo git config credential.helper ${{ secrets.GIT_PAT }}
-           sudo git remote -v
-           sudo git fetch --unshallow origin
-           sudo git checkout stage
-           sudo git pull
-           sudo git push -f -u poc stage
+           git remote add poc https://github.com/Vranda1188/AEM-Remote.git
+           git config credential.username ${{ secrets.GIT_USER }}
+           git config credential.helper ${{ secrets.GIT_PAT }}
+           git remote -v
+           git checkout stage
+           git pull
+           git push -f -u poc stage
        shell: bash
