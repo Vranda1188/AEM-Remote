@@ -5,7 +5,9 @@ name: Dev Code Sync and Deploy
 
 on:
   pull_request:
-    branches: [develop]
+    branches:
+     - develop
+     - stage
 
 jobs:      
   Checkout-Deploy-Dev:
@@ -28,4 +30,31 @@ jobs:
            git checkout develop
            git pull
            git push -f -u poc develop
+       shell: bash
+     
+  Checkout-Stage:
+    runs-on: ubuntu-latest
+    environment: stage
+    steps:    
+     - name: Checkout
+       uses: actions/checkout@v3
+       with:
+          token: ${{ secrets.GIT_PAT }}
+          fetch-depth: 0
+          
+  Checkout-CodeSync-Stage:
+    runs-on: ubuntu-latest
+    environment: stage
+    needs: Checkout-Stage
+    steps:       
+     - name: Code Sync to stage branch
+       run: |
+           sudo apt-get install -y unzip git
+           git remote add poc https://github.com/Vranda1188/AEM-Remote.git
+           git config credential.username ${{ secrets.GIT_USER }}
+           git config credential.helper "!echo password=${{ secrets.GIT_PAT }}; echo"
+           git remote -v
+           git checkout stage
+           git pull
+           git push -f -u poc stage
        shell: bash
