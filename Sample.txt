@@ -1,7 +1,0 @@
-This is a text file to prove that the change is merged.
-I am testing the CI triggering while pull request is raised for develop
-
-
-This is to test if this CI pipeline is triggered, even if a push happens on develop
-
-HELLOOOOOO

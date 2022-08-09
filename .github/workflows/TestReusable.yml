@@ -1,0 +1,9 @@
+name: Call a reusable workflow and use its outputs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Calling the Reusable Workflow:
+    uses: ./.github/workflows/ioCLIsetup-Config-DecryptSecrets.yml
+    
