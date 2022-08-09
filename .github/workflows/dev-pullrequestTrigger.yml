@@ -6,6 +6,7 @@ name: Dev Code Sync and Deploy
 on:
   pull_request:
     branches: [develop]
+    types: [closed]
 
 jobs:      
   Checkout-Deploy-Dev:
