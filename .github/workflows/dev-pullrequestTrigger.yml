@@ -9,7 +9,7 @@ on:
     types: [closed]
 
 jobs:      
-  Checkout-Deploy-Dev:
+  Checkout-Sync-Dev:
     runs-on: ubuntu-latest
     environment: dev
     steps:    
@@ -30,4 +30,20 @@ jobs:
            git pull
            git push -f -u poc develop
        shell: bash
-     
+  
+  Configure-Adobe-IO:
+    runs-on: ubuntu-latest
+    needs: Checkout-Sync-Dev
+    steps:
+      - uses: adobe/aio-cli-setup-action@1.1.0
+      - run: aio plugins:install @adobe/aio-cli-plugin-cloudmanager
+      - run: |
+          chmod 775 * 
+          sh decrypt_secret.sh
+          sh decrypt_key.sh
+        env:
+          PK: ${{ secrets.PK }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - run: |
+         aio config:set ims.contexts.aio-cli-plugin-cloudmanager $HOME/secrets/config.json --file --json
+         aio config:set ims.contexts.aio-cli-plugin-cloudmanager.private_key $HOME/secrets/private.key --file
