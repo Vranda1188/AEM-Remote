@@ -36,6 +36,7 @@ jobs:
     needs: Checkout-Sync-Dev
     steps:
       - uses: adobe/aio-cli-setup-action@1.1.0
+      - uses: actions/checkout@v3 
       - run: aio plugins:install @adobe/aio-cli-plugin-cloudmanager
       - run: |
           chmod 775 * 
