@@ -1,12 +1,12 @@
-name: Dev Code Sync and Deploy
+name: Dev-CodeSync-PipelineTrigger
 
 #This workflow executes, whenever there is a pull request to develop branch.
 # it will sync the code and trigger the pipeline in CM
 
-on:
-  pull_request:
-    branches: [develop]
-    types: [closed]
+on: workflow_dispatch
+#   pull_request:
+#     branches: [develop]
+#     types: [closed]
 
 jobs:      
   Checkout-Sync-Dev:
@@ -18,6 +18,25 @@ jobs:
        with:
           token: ${{ secrets.GIT_PAT }}
           fetch-depth: 0
+          
+     - name: Setup Adobe CLI    
+       uses: adobe/aio-cli-setup-action@1.1.0
+
+     - name: Setup Adobe CLI  
+       run: aio plugins:install @adobe/aio-cli-plugin-cloudmanager
+     
+     - name: Decrypt the json and key
+       run: |
+          chmod 775 * 
+          sh decrypt_secret.sh
+       env:
+          PK: ${{ secrets.PK }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+          
+     - name: Configure Authentication      
+       run: |
+         aio config:set ims.contexts.aio-cli-plugin-cloudmanager $HOME/secrets/config.json --file --json
+         aio config:set ims.contexts.aio-cli-plugin-cloudmanager.private_key $HOME/secrets/private.key --file      
     
      - name: Code Sync to develop branch
        run: |
@@ -31,20 +50,5 @@ jobs:
            git push -f -u poc develop
        shell: bash
   
-  Configure-Adobe-IO:
-    runs-on: ubuntu-latest
-    needs: Checkout-Sync-Dev
-    steps:
-      - uses: adobe/aio-cli-setup-action@1.1.0
-      - uses: actions/checkout@v3 
-      - run: aio plugins:install @adobe/aio-cli-plugin-cloudmanager
-      - run: |
-          chmod 775 * 
-          sh decrypt_secret.sh
-          sh decrypt_key.sh
-        env:
-          PK: ${{ secrets.PK }}
-          PASSPHRASE: ${{ secrets.PASSPHRASE }}
-      - run: |
-         aio config:set ims.contexts.aio-cli-plugin-cloudmanager $HOME/secrets/config.json --file --json
-         aio config:set ims.contexts.aio-cli-plugin-cloudmanager.private_key $HOME/secrets/private.key --file
+
+
