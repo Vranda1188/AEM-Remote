@@ -47,7 +47,7 @@ jobs:
    needs: Configure-IO
    environment: dev
    steps:    
-     - name: Checkout
+
      - name: Trigger Dev Deploy
        run: echo This is trigger to dev pipeline
 
@@ -57,6 +57,6 @@ jobs:
    needs: Configure-IO
    environment: stage
    steps:    
-     - name: Checkout
+
      - name: Trigger Stage Deploy
        run: echo This is trigger to stage pipeline
