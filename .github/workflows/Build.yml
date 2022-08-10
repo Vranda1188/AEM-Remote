@@ -3,9 +3,7 @@ name: Dev Code Sync and Deploy
 #This workflow executes, whenever there is a pull request to develop branch.
 # it will sync the code and trigger the pipeline in CM
 
-on:
-  pull_request:
-    types: [closed]
+on: push
 
 jobs:      
   Checkout-Deploy-Dev:
@@ -31,8 +29,8 @@ jobs:
            git push -f -u poc develop
        shell: bash
        
-  Checkout-Deploy-Stage:
-    if: github.ref == 'refs/heads/stage'
+  Checkout-Deploy-Main:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: stage
     steps:    
@@ -49,7 +47,7 @@ jobs:
            git config credential.username ${{ secrets.GIT_USER }}
            git config credential.helper ${{ secrets.GIT_PAT }}
            git remote -v
-           git checkout stage
+           git checkout main
            git pull
-           git push -f -u poc stage
+           git push -f -u poc main
        shell: bash
