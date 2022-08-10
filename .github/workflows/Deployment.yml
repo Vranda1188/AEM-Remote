@@ -42,18 +42,20 @@ jobs:
          aio config:set ims.contexts.aio-cli-plugin-cloudmanager.private_key $HOME/secrets/private.key --file    
          
   Deploy-Dev:
-   if: ${{ inputs.env }} == 'dev'
+   if: ${{ github.event.inputs.env == 'dev' }}
    runs-on: ubuntu-latest
    environment: dev
+   needs: Configure-IO
    steps:    
 
      - name: Trigger Dev Deploy
        run: echo This is trigger to dev pipeline
 
   Deploy-Main:
-   if: ${{ inputs.env }} == 'stage'
+   if:  ${{ github.event.inputs.env == 'stage' }}
    runs-on: ubuntu-latest
    environment: stage
+   needs: Configure-IO
    steps:    
 
      - name: Trigger Stage Deploy
