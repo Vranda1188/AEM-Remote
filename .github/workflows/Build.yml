@@ -22,7 +22,7 @@ jobs:
         steps:  
          - name: Code Sync to develop branch
            run: |
-            sudo apt-get install -y unzip git
+             sudo apt-get install -y unzip git
              git remote add poc https://github.com/Vranda1188/AEM-Remote.git
              git config credential.username ${{ secrets.GIT_USER }}
              git config credential.helper ${{ secrets.GIT_PAT }}
