@@ -6,48 +6,48 @@ name: Trigger Build
 on: push
 
 jobs:      
-  Checkout-Deploy-Dev:
-    if: github.ref == 'refs/heads/develop'
+  Checkout:
     runs-on: ubuntu-latest
-    environment: dev
     steps:    
      - name: Checkout
        uses: actions/checkout@v3
        with:
           token: ${{ secrets.GIT_PAT }}
           fetch-depth: 0
-    
-     - name: Code Sync to develop branch
-       run: |
-           sudo apt-get install -y unzip git
-           git remote add poc https://github.com/Vranda1188/AEM-Remote.git
-           git config credential.username ${{ secrets.GIT_USER }}
-           git config credential.helper ${{ secrets.GIT_PAT }}
-           git remote -v
-           git checkout develop
-           git pull
-           git push -f -u poc develop
-       shell: bash
+   
+  Code-Sync-Dev: 
+        if: github.ref == 'refs/heads/develop'
+        runs-on: ubuntu-latest
+        needs: Checkout
+        steps:  
+         - name: Code Sync to develop branch
+           run: |
+            sudo apt-get install -y unzip git
+             git remote add poc https://github.com/Vranda1188/AEM-Remote.git
+             git config credential.username ${{ secrets.GIT_USER }}
+             git config credential.helper ${{ secrets.GIT_PAT }}
+             git remote -v
+             git checkout develop
+             git pull
+             git push -f -u poc develop
+           shell: bash
+         
+         - name: Storybook
+           run: echo "This will update the child repo"
        
-  Checkout-Deploy-Main:
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment: stage
-    steps:    
-     - name: Checkout
-       uses: actions/checkout@v3
-       with:
-          token: ${{ secrets.GIT_PAT }}
-          fetch-depth: 0
-    
-     - name: Code Sync to stage branch
-       run: |
-           sudo apt-get install -y unzip git
-           git remote add poc https://github.com/Vranda1188/AEM-Remote.git
-           git config credential.username ${{ secrets.GIT_USER }}
-           git config credential.helper ${{ secrets.GIT_PAT }}
-           git remote -v
-           git checkout main
-           git pull
-           git push -f -u poc main
-       shell: bash
+  Code-Sync-Main:
+        if: github.ref == 'refs/heads/main'
+        runs-on: ubuntu-latest
+        needs: Checkout
+        steps:    
+         - name: Code Sync to main branch
+           run: |
+             sudo apt-get install -y unzip git
+             git remote add poc https://github.com/Vranda1188/AEM-Remote.git
+             git config credential.username ${{ secrets.GIT_USER }}
+             git config credential.helper ${{ secrets.GIT_PAT }}
+             git remote -v
+             git checkout main
+             git pull
+             git push -f -u poc main
+           shell: bash
