@@ -1,0 +1,16 @@
+name: HTTP Status Code
+
+#This workflow executes, whenever there is a pull request to develop branch.
+# it will sync the code and trigger the pipeline in CM
+
+on: workflow_dispatch
+
+jobs:      
+  HTTP-Status-Code:
+    runs-on: ubuntu-latest
+    steps:    
+     - name: Check the status code and print it
+       run: |
+          chmod 775 * 
+          cd config
+          sh test-http.sh
