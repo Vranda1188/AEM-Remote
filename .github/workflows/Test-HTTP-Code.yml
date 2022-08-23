@@ -20,11 +20,11 @@ jobs:
        shell: bash
      
      - name: Test response
-       if: $response != '200'
+       if: ${{ $response != '200' }}
        run: |
         echo "This is a failure"
         
      - name: Test response
-       if: $response == '200'
+       if: ${{ $response == '200' }}
        run: |
         echo "This is a SUCCESS"
