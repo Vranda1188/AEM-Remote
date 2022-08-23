@@ -11,10 +11,18 @@ on:
     type: environment
 
 jobs:
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test Job
+        run: |
+           echo You Selected ${{ github.event.inputs.env }}
+           
   Dev:
     if: ${{ github.event.inputs.env == 'dev'}}
     runs-on: ubuntu-latest
     environment: dev
+    needs: Test
     steps:
       - name: Configure Authentication
         run: |
@@ -24,6 +32,7 @@ jobs:
     if: ${{ github.event.inputs.env == 'stage'}}
     runs-on: ubuntu-latest
     environment: stage
+    needs: Test
     steps:
       - name: Configure Authentication
         run: |
@@ -33,6 +42,7 @@ jobs:
     if: ${{ github.event.inputs.env == 'uat'}}
     runs-on: ubuntu-latest
     environment: uat
+    needs: Test
     steps:
       - name: Configure Authentication
         run: |
