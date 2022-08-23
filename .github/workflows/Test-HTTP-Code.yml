@@ -15,7 +15,7 @@ jobs:
      - name: Check the status code and print it
        id: status
        run: |
-          $response = curl -o /dev/null --silent --head --write-out '%{http_code}\n' "www.google.com" 
+          curl -o /dev/null --silent --head --write-out '%{http_code}\n' "www.google.com" = response
           echo "response from curl= $response"
           echo "::set-output name=OUTPUT::$response"
           echo "It is a success response"
