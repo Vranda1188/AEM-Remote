@@ -15,21 +15,9 @@ jobs:
      - name: Check the status code and print it
        id: status
        run: |
-          curl -o /dev/null --silent --head --write-out '%{http_code}\n' "www.google.com" = response
-          echo "response from curl= $response"
-          echo "::set-output name=OUTPUT::$response"
+          curl_response=$(curl -o /dev/null --silent --head --write-out '%{http_code}\n' "www.google.com")
+          echo "response from curl= $curl_response"
           echo "It is a success response"
        shell: bash
-     
-     - name: Print the value
-       if: steps.status.outputs.response == 200
-       run: |
-         echo "It is a success response"
-       shell: bash
-       
-     - name: Print the value Again
-       if: steps.status.outputs.response != 200
-       run: |
-         echo "It is a failure response"
-         
+   
      
