@@ -14,6 +14,6 @@ jobs:
      
      - name: Check the status code and print it
        run: |
-          chmod 775 * 
-          cd config
-          sh test-http.sh
+          response = $(curl -o /dev/null --silent --head --write-out '%{http_code}\n' "www.google.com" )
+          echo "response from curl= $response"
+       shell: bash
