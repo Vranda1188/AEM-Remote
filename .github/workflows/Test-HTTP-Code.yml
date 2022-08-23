@@ -13,9 +13,23 @@ jobs:
        uses: actions/checkout@v3
      
      - name: Check the status code and print it
+       id: status
        run: |
           response = $(curl -o /dev/null --silent --head --write-out '%{http_code}\n' "www.google.com" )
           echo "response from curl= $response"
-          if: $response == '200'
+          echo "::set-output name=OUTPUT::$response"
           echo "It is a success response"
        shell: bash
+     
+     - name: Print the value
+       if: steps.status.outputs.response == 200
+       run: |
+         echo "It is a success response"
+       shell: bash
+       
+     - name: Print the value Again
+       if: steps.status.outputs.response != 200
+       run: |
+         echo "It is a failure response"
+         
+     
