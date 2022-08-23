@@ -18,7 +18,8 @@ jobs:
           curl_response=$(curl -o /dev/null --silent --head --write-out '%{http_code}\n' "www.google.com")
           echo "response from curl= $curl_response"
           echo "It is a success response"
-          curl_responses=$(curl --write-out '%{http_code}\n' "www.google.com")
+          echo "******************************************************************************************"
+          curl_responses=$(curl -o /dev/null --silent --write-out '%{http_code}\n' "www.google.com")
           echo "response from curl= $curl_responses"
           
        shell: bash
