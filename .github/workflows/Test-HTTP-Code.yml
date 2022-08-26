@@ -21,7 +21,7 @@ jobs:
           echo "******************************************************************************************"
           curl_responses=$(curl -o /dev/null --silent --write-out '%{http_code}\n' "www.google.com")
           echo "response from curl= $curl_responses"
-          
+          If($curl_response != 200){ echo "Status is NOT OK"} else { echo "Status is 200 OK"}          
        shell: bash
    
      
