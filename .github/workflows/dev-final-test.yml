@@ -1,0 +1,13 @@
+name: Develop Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  dev-sync:
+    uses: .github/workflows/Final-Test.yml
+    with:
+      BRANCH: 'develop'
+      ENVIRONMENT: dev
+      VERIFICATION: www.google.com
+    secrets: inherit
