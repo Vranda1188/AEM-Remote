@@ -1,6 +1,8 @@
 name: Develop Final Test
 
-on: push
+on: 
+  push:
+    branches: ['develop']
 
 jobs:
   dev-sync:
