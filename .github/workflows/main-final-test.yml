@@ -10,5 +10,5 @@ jobs:
     with:
       BRANCH: 'main'
       ENVIRONMENT: stage
-      VERIFICATION: www.google.com
+      VERIFICATION: www.youtube.com
     secrets: inherit
