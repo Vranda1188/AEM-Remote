@@ -1,6 +1,6 @@
-name: Develop Workflow
+name: Develop Final Test
 
-on: workflow_dispatch
+on: push
 
 jobs:
   dev-sync:
