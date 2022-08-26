@@ -19,7 +19,7 @@ jobs:
           echo "response from curl= $curl_response"
           echo "It is a success response"
           echo "******************************************************************************************"
-          If($curl_response != 200){ echo "Status is NOT OK"} else { echo "Status is 200 OK"}          
+          if [ $curl_response = 200 ]; then echo "Status is NOT OK" else  echo "Status is 200 OK" fi        
        shell: bash
    
      
