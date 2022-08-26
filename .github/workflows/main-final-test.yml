@@ -1,6 +1,8 @@
 name: Main Final Test
 
-on: push
+on: 
+  push:
+    branches: ['main']
 
 jobs:
   dev-sync:
