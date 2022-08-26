@@ -1,0 +1,46 @@
+name: Trigger Build
+
+on: 
+  workflow_call:
+    inputs:
+      BRANCH:
+        description: branch
+        type: string
+      ENVIRONMENT:
+        description: environment
+        type: string
+      VERIFICATION:
+        desciption: verify
+        type: string
+
+jobs:      
+  Checkout-Deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.ENVIRONMENT }}
+    steps:    
+     - name: Checkout
+       uses: actions/checkout@v3
+       with:
+          fetch-depth: 0
+    
+     - name: Code Sync
+       run: |
+           sudo apt-get install -y unzip git
+           git remote add poc https://github.com/Vranda1188/AEM-Remote.git
+           git config credential.username ${{ secrets.GIT_USER }}
+           git config credential.helper ${{ secrets.GIT_PAT }}
+           git remote -v
+           git checkout ${{ inputs.branch }}
+           git pull
+           git push -f -u poc ${{ inputs.branch }}
+       shell: bash
+       
+     - name: Check the status code and print it
+       id: status
+       run: |
+          curl_response=$(curl -o /dev/null --silent --head --write-out '%{http_code}\n' "${{ inputs.VERIFICATION }}")
+          echo "response from curl= $curl_response"
+          echo "It is a success response"
+          echo "******************************************************************************************"
+          if [[ $curl_response -eq 200 ]]; then echo "Status is 200 OK"; else  echo "Status is NOT 200 OK"; exit 1; fi        
+       shell: bash
