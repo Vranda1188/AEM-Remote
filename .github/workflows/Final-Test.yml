@@ -10,7 +10,7 @@ on:
         description: environment
         type: string
       VERIFICATION:
-        desciption: verify
+        description: verify
         type: string
 
 jobs:      
