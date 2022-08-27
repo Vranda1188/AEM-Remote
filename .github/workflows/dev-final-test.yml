@@ -1,9 +1,9 @@
 name: Develop Final Test
 
 on: 
-  workflow_dispatch
-#   push:
-#     branches: ['develop']
+  workflow_dispatch:
+  push:
+    branches: ['develop']
 
 jobs:
   dev-sync:
