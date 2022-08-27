@@ -1,6 +1,7 @@
 name: Develop Final Test
 
 on: 
+  workflow_dispatch:
   push:
     branches: ['develop']
 
