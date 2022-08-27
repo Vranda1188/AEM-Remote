@@ -35,6 +35,11 @@ jobs:
            git pull
            git push -f -u poc ${{ inputs.branch }}
        shell: bash
+            
+     - name: Test The develop
+       if: ${{ inputs.branch == 'develop' }}
+       run: echo "You have executed ${{ inputs.branch }} branch"
+       shell: bash
        
      - name: Check the status code and print it
        id: status
