@@ -5,10 +5,10 @@ on:
     branches: ['main']
 
 jobs:
-  dev-sync:
+  stage-sync:
     uses: ./.github/workflows/Final-Test.yml
     with:
       BRANCH: 'main'
       ENVIRONMENT: stage
-      VERIFICATION: www.youtube.com
+      VERIFICATION: www.google.com
     secrets: inherit
